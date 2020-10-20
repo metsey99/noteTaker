@@ -18,11 +18,10 @@ const LoginPage = () => {
       let result = await auth.signInWithPopup(provider);
       if (result.user !== null && result.user.displayName !== null) {
         setDisplayName(result.user.displayName);
+        window.location.reload(true);
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      window.location.reload(true);
     }
   }
 
