@@ -15,13 +15,15 @@ const LoginPage = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      let result = await auth.signInWithPopup(provider);
+      await auth.signInWithRedirect(provider);
+      let result = await auth.getRedirectResult();
       if (result.user !== null && result.user.displayName !== null) {
         setDisplayName(result.user.displayName);
-        window.location.reload(true);
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      window.location.reload(true);
     }
   }
 
@@ -31,7 +33,6 @@ const LoginPage = () => {
       window.location.reload(true);
     } catch (error) {
       console.log(error);
-
     }
   }
 
