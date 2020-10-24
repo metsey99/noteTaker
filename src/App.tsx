@@ -5,6 +5,7 @@ import NoteBlock from './components/NoteBlock';
 import styled from 'styled-components';
 import LoginPage from './pages/login/LoginPage';
 import AddNoteButton from './components/AddNoteButton';
+import {Empty} from 'antd';
 import { auth, db } from './firebase';
 
 interface IDoc {
@@ -35,7 +36,10 @@ const App = () => {
           const { title, content, color } = doc.data();
           tempArr.push({ id: doc.id, title: title, content: content, color: color });
         });
-        setExistingNotes(tempArr);
+        
+        setExistingNotes(tempArr.sort((first, second):number => {
+          return (first.title < second.title) ? 1 : (first.title > second.title) ? -1 : 0;
+        }));
       }
     });
   }, []);
@@ -53,8 +57,10 @@ const App = () => {
               </BlockStyle>
             );
           }) :
-          <div>
-            <h1>No notes!</h1>
+          <div style={{whiteSpace: 'pre-line'}}>
+            <Empty imageStyle={{marginTop: '10%'}}
+              description={`No Note Found. \n Add One!`}
+            />
           </div>
       }
       {existingNotes && <AddNoteButton userUid={userUid} />}
