@@ -17,7 +17,6 @@ interface IDoc {
 
 const BlockStyle = styled.div`
   margin-top: 10px;
-  margin-bottom: 10px;
 `;
 
 const App = () => {

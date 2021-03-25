@@ -68,10 +68,15 @@ const EditingModal = (props: EditingModalProps) => {
     let temp = [...notes];
     for (let i = 0; i < temp.length; i++) {
       if (temp[i].id == noteUid) {
+        console.log(temp[i]);
+
         temp[i] = newData;
+        console.log(temp[i]);
+
         break;
       }
     }
+    changeNoteList(temp);
   };
 
   const handleFinish = async (values: Object) => {
@@ -95,7 +100,7 @@ const EditingModal = (props: EditingModalProps) => {
           color: selectedColor,
         });
     } else {
-      if (noteUid) {
+      if (noteUid !== undefined) {
         editNote(noteUid, {
           id: noteUid,
           title: title,

@@ -6,8 +6,12 @@ import EditingModal from "./EditingModal";
 
 const AffixStyle = styled(Affix)`
   position: fixed;
-  bottom: 12px;
-  right: 7px;
+  width: 100%;
+  height: auto;
+  bottom: 0px;
+  background-color: white;
+  padding-top: 5px;
+  padding-bottom: 5px;
 `;
 
 const ButtonStyle = styled.div`
@@ -43,7 +47,7 @@ const AddNoteButton = ({ notes, changeNotes, userUid }: AddNoteButtonProps) => {
   };
 
   return (
-    <Row>
+    <Row style={{ marginTop: "55px" }}>
       <AffixStyle>
         <ButtonStyle onClick={handleAdd}>
           <PlusCircleOutlined style={{ fontSize: "40px" }} />

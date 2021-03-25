@@ -71,26 +71,30 @@ const NoteBlock = (props: NoteBlockProps) => {
         span={16}
         style={{
           backgroundColor: noteColor ? noteColor : "white",
-          display: "inline-block",
         }}
       >
-        <Row align="middle">
+        <Row
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <Col
-            xs={{ span: 20 }}
-            sm={{ span: 21 }}
-            md={{ span: 22 }}
-            span={23}
             onClick={handleEdit}
+            style={{
+              width: "80%",
+            }}
           >
             <TitleStyle>{noteTitle}</TitleStyle>
+            <ContentStyle>{noteContent}</ContentStyle>
           </Col>
           <Col onClick={handleDelete}>
-            <DeleteOutlined style={{ fontSize: "24px" }} />
+            <DeleteOutlined style={{ fontSize: "30px", color: "black" }} />
           </Col>
         </Row>
-        <Row onClick={handleEdit}>
-          <ContentStyle>{noteContent}</ContentStyle>
-        </Row>
+        {/* <Row onClick={handleEdit}></Row> */}
       </BlockStyle>
       <EditingModal
         notes={notes}
