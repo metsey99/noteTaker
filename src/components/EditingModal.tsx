@@ -67,7 +67,7 @@ const EditingModal = (props: EditingModalProps) => {
   const editNote = (noteUid: string, newData: IDoc) => {
     let temp = [...notes];
     for (let i = 0; i < temp.length; i++) {
-      if (temp[i].id == noteUid) {
+      if (temp[i].id === noteUid) {
         console.log(temp[i]);
 
         temp[i] = newData;
