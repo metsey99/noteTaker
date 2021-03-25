@@ -1,11 +1,20 @@
-import React, {useState} from 'react';
-import styled from 'styled-components';
-import { Col, Row, message } from 'antd';
-import EditingModal from './EditingModal';
-import {DeleteOutlined } from '@ant-design/icons';
-import {db} from '../firebase';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { Col, Row, message } from "antd";
+import EditingModal from "./EditingModal";
+import { DeleteOutlined } from "@ant-design/icons";
+import { db } from "../firebase";
+
+interface IDoc {
+  id: any;
+  title: string;
+  content: string;
+  color: string;
+}
 
 interface NoteBlockProps {
+  notes: Array<IDoc>;
+  changeNoteList: Function;
   noteUid: string;
   userUid: string;
   noteTitle: string;
@@ -31,37 +40,72 @@ const ContentStyle = styled(Row)`
 `;
 
 const NoteBlock = (props: NoteBlockProps) => {
-  const {noteTitle, noteContent, noteColor, userUid, noteUid} = props;
+  const {
+    notes,
+    changeNoteList,
+    noteTitle,
+    noteContent,
+    noteColor,
+    userUid,
+    noteUid,
+  } = props;
   const [isVisible, setIsVisible] = useState(false);
-  
+
   const handleEdit = () => {
-    setIsVisible(prevState => !prevState);
-  }
-  
+    setIsVisible((prevState) => !prevState);
+  };
+
   const handleDelete = async () => {
-    message.success("Successfully Deleted!")
-    await db.collection("Users").doc(userUid).collection("Notes").doc(noteUid).delete();
-    window.location.reload(true);
-  }
+    message.success("Successfully Deleted!");
+    await db
+      .collection("Users")
+      .doc(userUid)
+      .collection("Notes")
+      .doc(noteUid)
+      .delete();
+  };
 
   return (
     <Row justify="center">
-      <BlockStyle span={16} style={{backgroundColor: noteColor?noteColor:"white", display: 'inline-block'}} >
-        <Row align="middle" >
-          <Col xs={{span: 20}} sm={{span: 21}} md={{span: 22}} span={23} onClick={handleEdit}>
+      <BlockStyle
+        span={16}
+        style={{
+          backgroundColor: noteColor ? noteColor : "white",
+          display: "inline-block",
+        }}
+      >
+        <Row align="middle">
+          <Col
+            xs={{ span: 20 }}
+            sm={{ span: 21 }}
+            md={{ span: 22 }}
+            span={23}
+            onClick={handleEdit}
+          >
             <TitleStyle>{noteTitle}</TitleStyle>
           </Col>
           <Col onClick={handleDelete}>
-            <DeleteOutlined style={{fontSize: '24px'}}/>
+            <DeleteOutlined style={{ fontSize: "24px" }} />
           </Col>
         </Row>
         <Row onClick={handleEdit}>
           <ContentStyle>{noteContent}</ContentStyle>
         </Row>
       </BlockStyle>
-      <EditingModal noteUid={noteUid} uid={userUid} isNew={false} noteTitle={noteTitle} noteContent={noteContent} noteColor={noteColor} visible={isVisible} setVisible={handleEdit}/>
+      <EditingModal
+        notes={notes}
+        changeNoteList={changeNoteList}
+        noteUid={noteUid}
+        uid={userUid}
+        isNew={false}
+        noteTitle={noteTitle}
+        noteContent={noteContent}
+        noteColor={noteColor}
+        visible={isVisible}
+        setVisible={handleEdit}
+      />
     </Row>
   );
-}
+};
 
 export default NoteBlock;

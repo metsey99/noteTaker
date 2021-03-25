@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { auth, provider } from '../../firebase';
-import { Col, Row, Button } from 'antd';
+import React, { useState, useEffect } from "react";
+import { auth, provider } from "../../firebase";
+import { Col, Row, Button } from "antd";
 
 const LoginPage = () => {
   const [displayName, setDisplayName] = useState("");
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      if(user && user.displayName){
+      if (user && user.displayName) {
         setDisplayName(user.displayName);
       }
-    })
+    });
   }, []);
 
   const handleGoogleLogin = async () => {
@@ -24,7 +24,7 @@ const LoginPage = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const handleGoogleLogout = async () => {
     try {
@@ -33,21 +33,27 @@ const LoginPage = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <Row justify="center">
-      {displayName === "" ?
+      {displayName === "" ? (
         <Col>
           <div>Please Login using your Google account.</div>
-          <Button type="primary" onClick={handleGoogleLogin}>Login</Button>
-        </Col> :
+          <Button type="primary" onClick={handleGoogleLogin}>
+            Login
+          </Button>
+        </Col>
+      ) : (
         <Col>
           <h1>{displayName}</h1>
-          <Button type="primary" danger onClick={handleGoogleLogout} >Logout</Button>
-        </Col>}
+          <Button type="primary" danger onClick={handleGoogleLogout}>
+            Logout
+          </Button>
+        </Col>
+      )}
     </Row>
   );
-}
+};
 
 export default LoginPage;
