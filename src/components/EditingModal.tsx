@@ -44,10 +44,10 @@ const EditingModal = (props: EditingModalProps) => {
     setVisible,
     ...otherProps
   } = props;
-  const [title, setTitle] = useState(noteTitle ? noteTitle : "");
-  const [content, setContent] = useState(noteContent ? noteContent : "");
+  const [title, setTitle] = useState(isNew ? "" : noteTitle);
+  const [content, setContent] = useState(isNew ? "" : noteContent);
   const [selectedColor, setSelectedColor] = useState(
-    noteColor ? noteColor : lightRed
+    isNew ? lightRed : noteColor
   );
 
   const handleTitleChange = (e: any): void => {
@@ -82,13 +82,6 @@ const EditingModal = (props: EditingModalProps) => {
   const handleFinish = async (values: Object) => {
     if (isNew) {
       const newNoteUid = uuidv1();
-
-      addNewNote({
-        id: newNoteUid,
-        title: title,
-        content: content,
-        color: selectedColor,
-      });
       await db
         .collection("Users")
         .doc(uid)
@@ -99,15 +92,15 @@ const EditingModal = (props: EditingModalProps) => {
           content: content,
           color: selectedColor,
         });
-    } else {
-      if (noteUid !== undefined) {
-        editNote(noteUid, {
-          id: noteUid,
+      if (title && content && selectedColor) {
+        addNewNote({
+          id: newNoteUid,
           title: title,
           content: content,
           color: selectedColor,
         });
       }
+    } else {
       await db
         .collection("Users")
         .doc(uid)
@@ -118,6 +111,14 @@ const EditingModal = (props: EditingModalProps) => {
           content: content,
           color: selectedColor,
         });
+      if (noteUid && title && content && selectedColor) {
+        editNote(noteUid, {
+          id: noteUid,
+          title: title,
+          content: content,
+          color: selectedColor,
+        });
+      }
     }
     setVisible();
   };
@@ -131,17 +132,17 @@ const EditingModal = (props: EditingModalProps) => {
       bodyStyle={{ backgroundColor: selectedColor }}
     >
       <Form onFinish={handleFinish}>
-        <Form.Item name="title" initialValue={title}>
+        <Form.Item name="title" initialValue={isNew ? "" : title}>
           <Input
-            value={title}
+            value={isNew ? "" : title}
             onChange={handleTitleChange}
             bordered={true}
             placeholder="Title"
           />
         </Form.Item>
-        <Form.Item name="content" initialValue={content}>
+        <Form.Item name="content" initialValue={isNew ? "" : content}>
           <TextArea
-            value={content}
+            value={isNew ? "" : content}
             onChange={handleContentChange}
             bordered={true}
             rows={5}
@@ -158,7 +159,7 @@ const EditingModal = (props: EditingModalProps) => {
               marginLeft: "7.5px",
               marginRight: "7.5px",
               border:
-                selectedColor === lightRed
+                isNew && selectedColor === lightRed
                   ? "2px solid black"
                   : "2px solid white",
             }}

@@ -49,8 +49,11 @@ const AddNoteButton = ({ notes, changeNotes, userUid }: AddNoteButtonProps) => {
   return (
     <Row style={{ marginTop: "55px" }}>
       <AffixStyle>
-        <ButtonStyle onClick={handleAdd}>
-          <PlusCircleOutlined style={{ fontSize: "40px" }} />
+        <ButtonStyle>
+          <PlusCircleOutlined
+            onClick={handleAdd}
+            style={{ fontSize: "40px" }}
+          />
         </ButtonStyle>
       </AffixStyle>
       <EditingModal

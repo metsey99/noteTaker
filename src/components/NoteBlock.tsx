@@ -55,14 +55,26 @@ const NoteBlock = (props: NoteBlockProps) => {
     setIsVisible((prevState) => !prevState);
   };
 
+  const deleteNote = (noteUid: string) => {
+    let temp = [...notes];
+    for (let i = 0; i < temp.length; i++) {
+      if (temp[i].id === noteUid) {
+        temp.splice(i, 1);
+        break;
+      }
+    }
+    changeNoteList(temp);
+  };
+
   const handleDelete = async () => {
-    message.success("Successfully Deleted!");
     await db
       .collection("Users")
       .doc(userUid)
       .collection("Notes")
       .doc(noteUid)
       .delete();
+    deleteNote(noteUid);
+    message.success("Successfully Deleted!");
   };
 
   return (
